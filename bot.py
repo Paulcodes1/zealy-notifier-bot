@@ -12,9 +12,9 @@ from bs4 import BeautifulSoup
 # 🔧 CONFIGURATION
 # ===========================
 
-TELEGRAM_BOT_TOKEN = "7903631094:AAHgQSsD95I9Y8-y5sUwzVl5_En0F8SylWs"
-CHAT_ID = "6850884504"
-COMMUNITIES = ["metacces-7573", "bitcoinvip"]
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
+COMMUNITIES = os.getenv("COMMUNITIES", "").split(",")
 CHECK_INTERVAL = 5  # in minutes
 DATA_FILE = "zealy_tasks.json"
 LOG_FILE = "zealy_notifier.log"
