@@ -189,7 +189,7 @@ def main():
     check_for_updates()  # initial run
 
     schedule.every(CHECK_INTERVAL).minutes.do(check_for_updates)
-    schedule.every().day.at("08:00").do(send_daily_summary)
+    schedule.every().day.at("02:00").do(send_daily_summary)
 
     while True:
         schedule.run_pending()
