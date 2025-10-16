@@ -193,7 +193,7 @@ def main():
     check_for_updates()  # initial run
 
     schedule.every(CHECK_INTERVAL).minutes.do(check_for_updates)
-    schedule.every(1).minutes.do(send_daily_summary)
+    schedule.every().day.at("01:50").do(send_daily_summary)
 
     while True:
         schedule.run_pending()
