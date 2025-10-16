@@ -133,6 +133,7 @@ def check_for_updates():
                     )
 
                     try:
+                        log(f"📤 Attempting to send message to Telegram: {message[:60]}...")
                         asyncio.run(bot.send_message(chat_id=CHAT_ID, text=message, parse_mode="Markdown"))
                         log(f"✅ New quest found: {title} ({community})")
                     except Exception as send_err:
@@ -172,6 +173,7 @@ def send_daily_summary():
             f"⏰ Checked at {datetime.now().strftime('%H:%M')}"
         )
 
+        log(f"📤 Attempting to send message to Telegram: {message[:60]}...")
         asyncio.run(bot.send_message(chat_id=CHAT_ID, text=message, parse_mode="Markdown"))
         log("📊 Daily summary sent successfully.")
     except Exception as e:
@@ -191,7 +193,7 @@ def main():
     check_for_updates()  # initial run
 
     schedule.every(CHECK_INTERVAL).minutes.do(check_for_updates)
-    schedule.every().day.at("02:23").do(send_daily_summary)
+    schedule.every(1).minutes.do(send_daily_summary)
 
     while True:
         schedule.run_pending()
