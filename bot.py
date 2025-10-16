@@ -7,6 +7,7 @@ import logging
 from datetime import datetime
 from telegram import Bot
 from bs4 import BeautifulSoup
+import asyncio
 
 # ===========================
 # 🔧 CONFIGURATION
@@ -40,13 +41,14 @@ def log(message):
 def send_error_to_telegram(error_message):
     """Send error messages to Telegram."""
     try:
-        bot.send_message(
+        asyncio.run(bot.send_message(
             chat_id=CHAT_ID,
             text=f"⚠️ *Bot Error:* {error_message}",
             parse_mode="Markdown"
-        )
+        ))
     except Exception as e:
         log(f"Failed to send error alert: {e}")
+
 
 # ===========================
 # 📦 DATA FUNCTIONS
@@ -131,7 +133,7 @@ def check_for_updates():
                     )
 
                     try:
-                        bot.send_message(chat_id=CHAT_ID, text=message, parse_mode="Markdown")
+                        asyncio.run(bot.send_message(chat_id=CHAT_ID, text=message, parse_mode="Markdown"))
                         log(f"✅ New quest found: {title} ({community})")
                     except Exception as send_err:
                         log(f"⚠️ Failed to send message for {title}: {send_err}")
@@ -170,7 +172,7 @@ def send_daily_summary():
             f"⏰ Checked at {datetime.now().strftime('%H:%M')}"
         )
 
-        bot.send_message(chat_id=CHAT_ID, text=message, parse_mode="Markdown")
+        asyncio.run(bot.send_message(chat_id=CHAT_ID, text=message, parse_mode="Markdown"))
         log("📊 Daily summary sent successfully.")
     except Exception as e:
         error_msg = f"Error sending daily summary: {e}"
@@ -189,7 +191,7 @@ def main():
     check_for_updates()  # initial run
 
     schedule.every(CHECK_INTERVAL).minutes.do(check_for_updates)
-    schedule.every().day.at("02:10").do(send_daily_summary)
+    schedule.every().day.at("02:23").do(send_daily_summary)
 
     while True:
         schedule.run_pending()
