@@ -16,7 +16,7 @@ import asyncio
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 COMMUNITIES = os.getenv("COMMUNITIES", "").split(",")
-CHECK_INTERVAL = 5  # in minutes
+CHECK_INTERVAL = 0.5  # in seconds
 DATA_FILE = "zealy_tasks.json"
 LOG_FILE = "zealy_notifier.log"
 
@@ -192,7 +192,7 @@ def main():
     log(f"Tracking communities: {', '.join(COMMUNITIES)}")
     check_for_updates()  # initial run
 
-    schedule.every(CHECK_INTERVAL).minutes.do(check_for_updates)
+    schedule.every(30).seconds.do(check_for_updates)
     schedule.every().day.at("07:00").do(send_daily_summary)
 
     while True:
